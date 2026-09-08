@@ -103,6 +103,11 @@ h2 { font-size: clamp(44px, 6.2vw, 92px); line-height: .97; }
 .animate-unit.motion-left { transform: translate3d(-16px, 12px, 0) scale(.985); }
 .animate-unit.motion-right { transform: translate3d(16px, 12px, 0) scale(.985); }
 .animate-unit.motion-visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+.person-avatar.animate-unit,
+.eyebrow-line.animate-unit,
+.scroll-dot.animate-unit,
+.brand-mark.animate-unit,
+.card-arrow.animate-unit { opacity: 1; transform: none; transition: none; }
 .hero-content .eyebrow { transition-delay: 80ms; }
 .hero-content h1 { transition-delay: 160ms; }
 .hero-content .hero-copy { transition-delay: 240ms; }
