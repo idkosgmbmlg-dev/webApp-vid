@@ -70,7 +70,11 @@ document.querySelectorAll(".filter-tab").forEach((tab) => tab.addEventListener("
   observeReveals();
   observeMotionUnits();
 }));
-searchInput.addEventListener("input", renderQuotes);
+searchInput.addEventListener("input", () => {
+  renderQuotes();
+  observeReveals();
+  observeMotionUnits();
+});
 document.querySelector("#dialogClose").addEventListener("click", closeDialog);
 backdrop.addEventListener("click", closeDialog);
 dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeDialog(); });
@@ -147,9 +151,39 @@ const motionObserver = "IntersectionObserver" in window
   : null;
 
 function observeMotionUnits() {
-  const selector = "main div, main p, main h1, main h2, main h3, main span, footer p, footer span";
-  document.querySelectorAll(`${selector}:not(.animate-unit):not(.dialog-body)`).forEach((element, index) => {
-    if (element.closest(".dialog-body")) return;
+  const selector = [
+    "main div",
+    "main p",
+    "main h1",
+    "main h2",
+    "main h3",
+    "main h4",
+    "main h5",
+    "main h6",
+    "main span",
+    "main button",
+    "main a.button",
+    "nav div",
+    "nav span",
+    "nav a",
+    "footer div",
+    "footer p",
+    "footer span",
+    "footer a",
+    "dialog button",
+    "dialog div",
+    "dialog p",
+    "dialog h1",
+    "dialog h2",
+    "dialog h3",
+    "dialog h4",
+    "dialog h5",
+    "dialog h6",
+    "dialog span"
+  ].join(", ");
+
+  document.querySelectorAll(`${selector}:not(.animate-unit)`).forEach((element, index) => {
+    if (element.classList.contains("dialog-body") || element.classList.contains("dialog-backdrop")) return;
     element.classList.add("animate-unit");
     element.style.setProperty("--motion-delay", `${Math.min(index % 8, 7) * 45}ms`);
     if (index % 3 === 1) element.classList.add("motion-left");
