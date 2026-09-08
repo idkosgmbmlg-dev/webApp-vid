@@ -13,9 +13,12 @@ const searchInput = document.querySelector("#searchInput");
 const dialog = document.querySelector("#quoteDialog");
 const backdrop = document.querySelector("#dialogBackdrop");
 const globalVideo = document.querySelector(".global-video");
+const backgroundToggle = document.querySelector("#backgroundToggle");
+const backgroundToggleLabel = document.querySelector("#backgroundToggleLabel");
 let activeFilter = "all";
 let parallaxFrame = null;
 let videoReady = false;
+let backgroundMode = "parallax";
 
 function renderQuotes() {
   const search = searchInput.value.toLowerCase().trim();
@@ -81,6 +84,11 @@ dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeDial
 
 function updateParallax() {
   parallaxFrame = null;
+  if (backgroundMode === "loop") {
+    globalVideo.style.setProperty("--parallax-y", "0px");
+    globalVideo.style.setProperty("--parallax-scale", "1.08");
+    return;
+  }
   const pageHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   const progress = window.scrollY / pageHeight;
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -110,13 +118,37 @@ window.addEventListener("scroll", () => {
 window.addEventListener("resize", requestParallaxUpdate, { passive: true });
 function primeVideoFrame() {
   videoReady = true;
-  globalVideo.play().then(() => {
+  if (backgroundMode === "loop") {
+    globalVideo.play().catch(() => {});
+  } else {
+    globalVideo.play().then(() => {
+      globalVideo.pause();
+      updateParallax();
+    }).catch(() => {
+      updateParallax();
+    });
+  }
+}
+
+function setBackgroundMode(mode) {
+  backgroundMode = mode;
+  const isLoop = mode === "loop";
+  document.body.classList.toggle("background-loop", isLoop);
+  backgroundToggle.classList.toggle("is-loop", isLoop);
+  backgroundToggle.setAttribute("aria-pressed", String(isLoop));
+  backgroundToggleLabel.textContent = isLoop ? "Video loop" : "Parallax";
+
+  if (isLoop) {
+    globalVideo.play().catch(() => {});
+  } else {
     globalVideo.pause();
     updateParallax();
-  }).catch(() => {
-    updateParallax();
-  });
+  }
 }
+
+backgroundToggle.addEventListener("click", () => {
+  setBackgroundMode(backgroundMode === "parallax" ? "loop" : "parallax");
+});
 
 globalVideo.addEventListener("loadedmetadata", primeVideoFrame);
 if (globalVideo.readyState >= 1) primeVideoFrame();
