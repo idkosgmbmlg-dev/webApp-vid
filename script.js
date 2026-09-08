@@ -182,14 +182,17 @@ function observeMotionUnits() {
     "dialog span"
   ].join(", ");
 
-  document.querySelectorAll(`${selector}:not(.animate-unit)`).forEach((element, index) => {
+  let animatedIndex = 0;
+  document.querySelectorAll(`${selector}:not(.animate-unit)`).forEach((element) => {
     if (element.classList.contains("dialog-body") || element.classList.contains("dialog-backdrop")) return;
+    if (element.matches(".person-avatar, .eyebrow-line, .scroll-dot, .brand-mark, .card-arrow")) return;
     element.classList.add("animate-unit");
-    element.style.setProperty("--motion-delay", `${Math.min(index % 8, 7) * 45}ms`);
-    if (index % 3 === 1) element.classList.add("motion-left");
-    if (index % 3 === 2) element.classList.add("motion-right");
+    element.style.setProperty("--motion-delay", `${Math.min(animatedIndex % 8, 7) * 45}ms`);
+    if (animatedIndex % 3 === 1) element.classList.add("motion-left");
+    if (animatedIndex % 3 === 2) element.classList.add("motion-right");
     if (motionObserver) motionObserver.observe(element);
     else element.classList.add("motion-visible");
+    animatedIndex += 1;
   });
 }
 
