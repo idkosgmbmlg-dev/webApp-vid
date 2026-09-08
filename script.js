@@ -19,6 +19,8 @@ let activeFilter = "all";
 let parallaxFrame = null;
 let videoReady = false;
 let backgroundMode = "parallax";
+let mouseParallaxX = 0;
+let mouseParallaxY = 0;
 
 function renderQuotes() {
   const search = searchInput.value.toLowerCase().trim();
@@ -85,6 +87,7 @@ dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeDial
 function updateParallax() {
   parallaxFrame = null;
   if (backgroundMode === "loop") {
+    globalVideo.style.setProperty("--parallax-x", "0px");
     globalVideo.style.setProperty("--parallax-y", "0px");
     globalVideo.style.setProperty("--parallax-scale", "1.08");
     return;
@@ -92,10 +95,16 @@ function updateParallax() {
   const pageHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   const progress = window.scrollY / pageHeight;
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const offset = (progress - 0.5) * 180;
+    const scrollOffset = (progress - 0.5) * 180;
+    const mouseOffsetX = mouseParallaxX * 28;
+    const mouseOffsetY = mouseParallaxY * 24;
     const scale = 1.08 + Math.min(Math.abs(progress - 0.5) * 0.1, 0.05);
-    globalVideo.style.setProperty("--parallax-y", `${offset.toFixed(2)}px`);
+    globalVideo.style.setProperty("--parallax-x", `${mouseOffsetX.toFixed(2)}px`);
+    globalVideo.style.setProperty("--parallax-y", `${(scrollOffset + mouseOffsetY).toFixed(2)}px`);
     globalVideo.style.setProperty("--parallax-scale", scale.toFixed(3));
+  } else {
+    globalVideo.style.setProperty("--parallax-x", "0px");
+    globalVideo.style.setProperty("--parallax-y", "0px");
   }
   if (videoReady && Number.isFinite(globalVideo.duration) && globalVideo.duration > 0) {
     const targetTime = progress * (globalVideo.duration - 0.05);
@@ -115,6 +124,17 @@ window.addEventListener("scroll", () => {
   document.querySelector(".nav").classList.toggle("scrolled", window.scrollY > 40);
   requestParallaxUpdate();
 }, { passive: true });
+window.addEventListener("mousemove", (event) => {
+  if (backgroundMode === "loop" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  mouseParallaxX = (event.clientX / window.innerWidth - 0.5) * 2;
+  mouseParallaxY = (event.clientY / window.innerHeight - 0.5) * 2;
+  requestParallaxUpdate();
+}, { passive: true });
+window.addEventListener("mouseleave", () => {
+  mouseParallaxX = 0;
+  mouseParallaxY = 0;
+  requestParallaxUpdate();
+});
 window.addEventListener("resize", requestParallaxUpdate, { passive: true });
 function primeVideoFrame() {
   videoReady = true;
@@ -136,7 +156,9 @@ function setBackgroundMode(mode) {
   document.body.classList.toggle("background-loop", isLoop);
   backgroundToggle.classList.toggle("is-loop", isLoop);
   backgroundToggle.setAttribute("aria-pressed", String(isLoop));
+  backgroundToggle.setAttribute("aria-label", isLoop ? "Gunakan mode parallax mouse dan scroll" : "Gunakan mode video loop tanpa efek scroll");
   backgroundToggleLabel.textContent = isLoop ? "Video loop" : "Parallax";
+  updateParallax();
 
   if (isLoop) {
     globalVideo.play().catch(() => {});
