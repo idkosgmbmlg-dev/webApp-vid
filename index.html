@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Lentera - koleksi pemikiran yang menyalakan langkah." />
+    <title>Lentera - Ideas that move us</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="global-video-wrap" aria-hidden="true">
+      <video class="global-video" muted playsinline preload="auto" poster="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2000&q=85">
+        <source src="https://media.istockphoto.com/id/2175840383/id/video/animasi-isometrik-3d-dari-jaringan-saraf-bercabang-berwarna-warni-pada-latar-belakang-gelap.mp4?s=mp4-640x640-is&k=20&c=3WL6o66fXkb-QFNv3Wq-OJ-1CY9smm9orxv86nRgxxs=" type="video/mp4" />
+      </video>
+      <div class="global-video-overlay"></div>
+    </div>
+    <div id="motion-layer" aria-hidden="true"></div>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a class="brand" href="#awal"><span class="brand-mark">✦</span> lentera</a>
+      <div class="nav-links">
+        <a href="#koleksi">Koleksi</a>
+        <a href="#tentang">Tentang</a>
+      </div>
+      <a class="nav-cta" href="#koleksi">Temukan quote <span>↗</span></a>
+    </nav>
+
+    <main>
+      <section class="hero" id="awal">
+        <div class="hero-content">
+          <p class="eyebrow light"><span class="eyebrow-line"></span> Arsip gagasan manusia</p>
+          <h1>Ideas that<br /><em>move us.</em></h1>
+          <p class="hero-copy">Kata-kata sederhana. Dampak yang tak terhingga.<br />Temukan percikan yang mungkin mengubah cara pandangmu.</p>
+          <a class="button button-light" href="#koleksi">Jelajahi koleksi <span>↓</span></a>
+        </div>
+        <div class="hero-meta">
+          <span>01 — 06</span>
+          <span class="scroll-label"><span class="scroll-dot"></span> scroll to explore</span>
+        </div>
+      </section>
+
+      <section class="intro section-pad" id="tentang">
+        <p class="eyebrow"><span class="eyebrow-line"></span> Mengapa lentera?</p>
+        <div class="intro-grid">
+          <h2>Setiap pemikiran<br />punya <em>cahayanya.</em></h2>
+          <div class="intro-detail">
+            <p>Di tengah riuhnya dunia, kami mengumpulkan kalimat-kalimat yang tetap menyala. Dari laboratorium, ruang seni, hingga jalanan - gagasan terbaik selalu menemukan jalannya.</p>
+            <span class="detail-number">06 <small>tokoh pilihan</small></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="collection section-pad" id="koleksi">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> Koleksi pilihan</p>
+            <h2>Words worth<br /><em>remembering.</em></h2>
+          </div>
+          <div class="collection-tools">
+            <label class="search-wrap">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Cari tokoh..." aria-label="Cari tokoh" />
+            </label>
+            <div class="filter-tabs" role="group" aria-label="Filter kategori">
+              <button class="filter-tab active" data-filter="all">Semua</button>
+              <button class="filter-tab" data-filter="sains">Sains</button>
+              <button class="filter-tab" data-filter="seni">Seni</button>
+              <button class="filter-tab" data-filter="hidup">Hidup</button>
+            </div>
+          </div>
+        </div>
+        <div class="quote-grid" id="quoteGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>Tokoh yang kamu cari belum ada di koleksi ini.</div>
+      </section>
+
+      <section class="closing section-pad">
+        <div class="closing-mark">✦</div>
+        <p class="eyebrow light"><span class="eyebrow-line"></span> Bawa pulang satu</p>
+        <h2>“The future belongs<br />to those who <em>believe.”</em></h2>
+        <p class="closing-author">- Eleanor Roosevelt</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="brand" href="#awal"><span class="brand-mark">✦</span> lentera</a>
+      <p>Made for curious minds.</p>
+      <span>© 2024 Lentera</span>
+    </footer>
+
+    <dialog class="quote-dialog" id="quoteDialog">
+      <button class="dialog-close" id="dialogClose" aria-label="Tutup dialog">×</button>
+      <div class="dialog-photo" id="dialogPhoto"></div>
+      <div class="dialog-body">
+        <p class="eyebrow" id="dialogCategory"></p>
+        <h2 id="dialogQuote"></h2>
+        <div class="dialog-person">
+          <span class="person-avatar" id="dialogAvatar"></span>
+          <div><strong id="dialogName"></strong><span id="dialogRole"></span></div>
+        </div>
+      </div>
+    </dialog>
+    <div class="dialog-backdrop" id="dialogBackdrop"></div>
+
+    <script src="script.js?v=video-fix-1"></script>
+  </body>
+</html>
